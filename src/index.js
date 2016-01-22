@@ -3,6 +3,7 @@
 const Vector = require('./Vector.js');
 const Plane = require('./Plane.js');
 const Shape = require('./Shape.js');
+const MBSPTreeNode = require('./MBSPTreeNode.js');
 
 // Initialize Two.js
 let originalCanvas = new Two({ width: 300, height: 200 })
@@ -65,6 +66,10 @@ var approximation = original.clone().approximate(0);
 // --------------------------------------------------------
 //  Rendering
 // --------------------------------------------------------
+
+// let tree = MBSPTreeNode.create(original, 0.1);
+// let vertices = tree.toShape();
+// console.log(tree, vertices);
 
 render(originalCanvas, original);
 render(multiresCanvas, approximation);

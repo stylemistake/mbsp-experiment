@@ -8,6 +8,11 @@ class Edge {
     this.point2 = point2;
   }
 
+  toPlane() {
+    return Plane.fromPoints(this.point1, this.point2);
+  }
+
+  // Returns a bounding box of an edge
   boundingBox() {
     return {
       x1: Math.min(this.point1.x, this.point2.x),
@@ -17,13 +22,14 @@ class Edge {
     };
   }
 
+  // Calculates an intersection point
   intersection(edge) {
     let bbox1 = this.boundingBox();
     let bbox2 = edge.boundingBox();
     if (bbox1.x1 < bbox2.x2 && bbox1.x2 > bbox2.x1 &&
         bbox1.y1 < bbox2.y2 && bbox1.y2 > bbox2.y1) {
-      let plane1 = Plane.fromPoints(this.point1, this.point2);
-      let plane2 = Plane.fromPoints(edge.point1, this.point2);
+      let plane1 = this.toPlane();
+      let plane2 = edge.toPlane();
       return plane1.intersection(plane2);
     }
     return false;
