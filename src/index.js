@@ -1,8 +1,70 @@
 'use strict';
 
-let Vector2 = require('./Vector2.js');
-let Plane2 = require('./Plane2.js');
+const Vector = require('./Vector.js');
+const Plane = require('./Plane.js');
+const Shape = require('./Shape.js');
 
-let vec = new Vector2(2, 2).normalize();
-let plane = Plane2.fromPoints(new Vector2(2, 2), new Vector2(4, 3));
-console.log(plane);
+// Initialize Two.js
+let originalCanvas = new Two({ width: 300, height: 200 })
+  .appendTo(document.getElementById('original'));
+
+let multiresCanvas = new Two({ width: 300, height: 200 })
+  .appendTo(document.getElementById('multires'));
+
+
+// --------------------------------------------------------
+//  Helper functions
+// --------------------------------------------------------
+
+function shapeToPath(shape) {
+  let anchors = shape.vertices.map((vec) => {
+    // Invert Y coordinates and add some offset
+    return new Two.Anchor(2 + vec.x, 14 - vec.y);
+  });
+  let path = new Two.Path(anchors, true);
+  path.stroke = '#2288aa';
+  path.linewidth = 0.5;
+  path.scale = 12;
+  return path;
+}
+
+function render(canvas, shape) {
+  canvas.clear();
+  canvas.add(shapeToPath(shape));
+  canvas.update();
+}
+
+
+// --------------------------------------------------------
+//  Vector image
+// --------------------------------------------------------
+
+// Video camera icon
+let original = new Shape([
+  new Vector(1, 2),
+  new Vector(1, 9),
+  new Vector(5, 7),
+  new Vector(5, 9),
+  new Vector(6, 9),
+  new Vector(7, 11),
+  new Vector(9, 12),
+  new Vector(11, 11),
+  new Vector(12, 9),
+  new Vector(13, 11),
+  new Vector(15, 12),
+  new Vector(17, 11),
+  new Vector(18, 9),
+  new Vector(19, 9),
+  new Vector(19, 1),
+  new Vector(5, 1),
+  new Vector(5, 4),
+]);
+
+var approximation = original.clone().approximate(0.2);
+
+// --------------------------------------------------------
+//  Rendering
+// --------------------------------------------------------
+
+render(originalCanvas, original);
+render(multiresCanvas, approximation);

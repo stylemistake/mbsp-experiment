@@ -1,6 +1,6 @@
 'use strict';
 
-class Node2 {
+class Node {
   constructor(plane, parent) {
     this.plane = plane;
     this.parent = parent;

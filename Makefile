@@ -20,7 +20,13 @@ node_modules: package.json
 ##  Phony targets
 ## --------------------------------------------------------
 
-default: node_modules
+default: public/bundle.js
+
+public/bundle.js: webpack.config.js node_modules $(wildcard src/*)
+	WEBPACK_ENV=production webpack --progress
+
+serve: node_modules
+	webpack-dev-server
 
 test: node_modules
 	mocha --recursive test

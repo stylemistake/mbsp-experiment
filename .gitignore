@@ -5,6 +5,7 @@
 ## ------------------------------------
 
 node_modules
+public/bundle.js
 .tmp
 .sass-cache
 reports

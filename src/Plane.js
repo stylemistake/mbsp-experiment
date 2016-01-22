@@ -1,8 +1,8 @@
 'use strict';
 
-const Vector2 = require('./Vector2.js');
+const Vector = require('./Vector.js');
 
-class Plane2 {
+class Plane {
   constructor(a, b, c) {
     // Equation: ax + by + c = 0
     this.a = a;
@@ -25,21 +25,29 @@ class Plane2 {
     if (isNaN(x) || !isFinite(x) || isNaN(y) || !isFinite(y)) {
       return null;
     }
-    return new Vector2(x || 0, y || 0);
+    return new Vector(x || 0, y || 0);
   }
 
   normalize() {
-    const m = new Vector2(this.a, this.b).magnitude();
-    return new Plane2(this.a / m, this.b / m, this.c / m);
+    const m = new Vector(this.a, this.b).magnitude();
+    return new Plane(this.a / m, this.b / m, this.c / m);
   }
 
   distanceTo(point) {
     const plane = this.normalize();
     return plane.a * point.x + plane.b * point.y + plane.c;
   }
+
+  queryY(x) {
+    return 0 - (this.a * x + this.c) / this.b;
+  }
+
+  queryX(y) {
+    return 0 - (this.b * y + this.c) / this.a;
+  }
 }
 
-Plane2.fromPoints = function (point1, point2) {
+Plane.fromPoints = function (point1, point2) {
   // Find slope component of the line
   const slope = point2.subtract(point1);
   // Find normal to the left of the line
@@ -47,7 +55,7 @@ Plane2.fromPoints = function (point1, point2) {
   // Find vectical slope offset
   const offset = 0 - normal.x * point1.x - normal.y * point1.y;
   // Return a plane
-  return new Plane2(normal.x, normal.y, offset);
+  return new Plane(normal.x, normal.y, offset);
 };
 
-module.exports = Plane2;
+module.exports = Plane;
