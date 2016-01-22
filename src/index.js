@@ -7,13 +7,6 @@ const Plane = require('./Plane.js');
 const Shape = require('./Shape.js');
 const MBSPTreeNode = require('./MBSPTreeNode.js');
 
-// Initialize Two.js
-let originalCanvas = new Two({ width: 300, height: 200 })
-  .appendTo(document.getElementById('original'));
-
-let multiresCanvas = new Two({ width: 300, height: 200 })
-  .appendTo(document.getElementById('multires'));
-
 
 // --------------------------------------------------------
 //  Helper functions
@@ -63,23 +56,45 @@ let original = new Shape([
   new Vector(5, 4),
 ]);
 
-var approximation = original.clone().approximate(0);
+var approx = original.clone().approximate(0);
+
+var approxList = MBSPTreeNode.createApproxList(original, 1);
 
 // --------------------------------------------------------
 //  Rendering
 // --------------------------------------------------------
 
+// Initialize Two.js
+const originalCanvas = new Two({ width: 300, height: 200 })
+  .appendTo(document.getElementById('original'));
+
+const approxInitialCanvas = new Two({ width: 300, height: 200 })
+  .appendTo(document.getElementById('approx_init'));
+
+const approxListCanvas = new Two({ width: 300, height: 200 })
+  .appendTo(document.getElementById('approx_list'));
+
 // let tree = MBSPTreeNode.create(original, 0.1);
 // let vertices = tree.toShape();
 // console.log(tree, vertices);
 
+console.log(approxList);
+
 render(originalCanvas, original);
-render(multiresCanvas, approximation);
+render(approxInitialCanvas, approx);
+render(approxListCanvas, approxList[0]);
 
 // Listen to input field text change events
 const $max_err = $('#max_err');
-$max_err.on('input', (e) => {
+$max_err.on('input', () => {
   let maxErr = parseFloat($max_err.val()) / 100;
   var approximation = original.clone().approximate(maxErr);
-  render(multiresCanvas, approximation);
+  render(approxInitialCanvas, approximation);
+});
+
+// Listen to input field text change events
+const $approx_iter = $('#approx_iter');
+$approx_iter.on('input', () => {
+  let approxIter = parseInt($approx_iter.val(), 10);
+  render(approxListCanvas, approxList[approxIter]);
 });

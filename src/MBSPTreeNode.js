@@ -69,21 +69,7 @@ MBSPTreeNode.create = function (shape, maxErr) {
   let approx = shape.clone().approximate(maxErr);
 
   // Create progressive approximation list
-  let approxList = [];
-  let approxTemp = shape.clone();
-  while (true) {
-    // Break if we have the smallest possible polygon
-    if (approxTemp.vertices.length <= approx.vertices.length) {
-      break;
-    }
-    // Create one-shot approximation
-    approxTemp.approximate(maxErr, true);
-    if (approxTemp.error > maxErr) {
-      break;
-    }
-    // Push current approximation into approximation list
-    approxList.unshift(approxTemp.clone());
-  }
+  let approxList = MBSPTreeNode.createApproxList(shape, maxErr);
 
   // Create initial BSP tree
   root.minErr = 0;
@@ -104,5 +90,24 @@ MBSPTreeNode.create = function (shape, maxErr) {
   // Return the tree
   return root;
 };
+
+MBSPTreeNode.createApproxList = function (shape, maxErr) {
+  let approxList = [];
+  let approxTemp = shape.clone();
+  while (true) {
+    // Break if we have the smallest possible polygon
+    if (approxTemp.vertices.length <= 3) {
+      break;
+    }
+    // Create one-shot approximation
+    approxTemp.approximate(maxErr, true);
+    if (approxTemp.error > maxErr) {
+      break;
+    }
+    // Push current approximation into approximation list
+    approxList.unshift(approxTemp.clone());
+  }
+  return approxList;
+}
 
 module.exports = MBSPTreeNode;
