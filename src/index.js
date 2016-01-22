@@ -1,5 +1,7 @@
 'use strict';
 
+const $ = require('jquery');
+
 const Vector = require('./Vector.js');
 const Plane = require('./Plane.js');
 const Shape = require('./Shape.js');
@@ -75,9 +77,9 @@ render(originalCanvas, original);
 render(multiresCanvas, approximation);
 
 // Listen to input field text change events
-document.getElementById('max_err')
-  .addEventListener('input', (e) => {
-    let maxErr = parseFloat(e.srcElement.value) / 100;
-    var approximation = original.clone().approximate(maxErr);
-    render(multiresCanvas, approximation);
-  });
+const $max_err = $('#max_err');
+$max_err.on('input', (e) => {
+  let maxErr = parseFloat($max_err.val()) / 100;
+  var approximation = original.clone().approximate(maxErr);
+  render(multiresCanvas, approximation);
+});
