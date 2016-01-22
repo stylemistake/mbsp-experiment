@@ -34,7 +34,7 @@ class Shape {
   }
 
   approximate(maxError) {
-    if (!maxError) {
+    if (maxError === void(0)) {
       maxError = 1;
     }
     let originalArea = this.clone().area();

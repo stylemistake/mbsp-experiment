@@ -60,7 +60,7 @@ let original = new Shape([
   new Vector(5, 4),
 ]);
 
-var approximation = original.clone().approximate(0.2);
+var approximation = original.clone().approximate(0);
 
 // --------------------------------------------------------
 //  Rendering
@@ -68,3 +68,11 @@ var approximation = original.clone().approximate(0.2);
 
 render(originalCanvas, original);
 render(multiresCanvas, approximation);
+
+// Listen to input field text change events
+document.getElementById('max_err')
+  .addEventListener('input', (e) => {
+    let maxErr = parseFloat(e.srcElement.value) / 100;
+    var approximation = original.clone().approximate(maxErr);
+    render(multiresCanvas, approximation);
+  });

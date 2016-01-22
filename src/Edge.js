@@ -2,19 +2,6 @@
 
 const Plane = require('./Plane.js');
 
-function testBBoxIntersection(bbox1, bbox2) {
-  if (x1 == x2) {
-      return !(x3 == x4 && x1 != x3);
-  } else if (x3 == x4) {
-      return true;
-  } else {
-      // Both lines are not parallel to the y-axis
-      m1 = ;
-      m2 = (y3-y4)/(x3-x4);
-      return (y1-y2)/(x1-x2) != m2;
-  }
-}
-
 class Edge {
   constructor(point1, point2) {
     this.point1 = point1;
